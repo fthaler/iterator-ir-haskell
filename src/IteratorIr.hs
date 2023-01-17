@@ -1,5 +1,9 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeFamilies #-}
+
 module IteratorIr (
     Iterator (It),
+    Connectivity (Source, Destination, neighbor, maxNeighbors),
     deref,
     itZip2,
     shift,
@@ -33,6 +37,13 @@ instance IndexedComonadStore Iterator where
     iexperiment f (It g a) = g <$> f a
 
 
+class Connectivity c where
+    type Source c
+    type Destination c
+    neighbor :: c -> Int -> Source c -> Destination c
+    maxNeighbors :: c -> Int
+
+
 deref :: Iterator a a t -> t
 deref = iextract  -- from IndexedComonad
 
@@ -46,8 +57,8 @@ lift2 :: (Iterator b c t -> Iterator b c' t' -> r) -> Iterator a c t -> Iterator
 lift2 g (It f a) (It f' a') = It (\x -> g (It f x) (It f' x)) a  -- TODO: a and a' must be identical!
 
 
-derefedNbShift n c it = [deref (shift (c i) it) | i <- [0..n-1]]
-nbShift n c = lift1 $ derefedNbShift n c
+derefedNbShift c it = [deref (shift (neighbor c i) it) | i <- [0..(maxNeighbors c)-1]]
+nbShift c = lift1 $ derefedNbShift c
 
 itZip2 = lift2 $ \x y -> (deref x, deref y)
 
