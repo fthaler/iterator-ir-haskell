@@ -15,7 +15,7 @@ data VertexIndex = Vertex { vIdx :: Int }
 data EdgeIndex = Edge { eIdx :: Int }
 data CellIndex = Cell { cIdx :: Int }
 
-c2e_list = [
+c2eList = [
         [0, 10, 3, 9],
         [1, 11, 4, 10],
         [2, 9, 5, 11],
@@ -28,9 +28,9 @@ c2e_list = [
     ]
 
 c2e :: Int -> CellIndex -> EdgeIndex
-c2e nb (Cell c) = Edge $ c2e_list!!c!!nb
+c2e nb (Cell c) = Edge $ c2eList!!c!!nb
 
-v2v_list = [
+v2vList = [
         [1, 3, 2, 6],
         [2, 3, 0, 7],
         [0, 5, 1, 8],
@@ -43,9 +43,9 @@ v2v_list = [
     ]
 
 v2v :: Int -> VertexIndex -> VertexIndex
-v2v nb (Vertex v) = Vertex $ v2v_list!!v!!nb
+v2v nb (Vertex v) = Vertex $ v2vList!!v!!nb
 
-e2v_list = [
+e2vList = [
         [0, 1],
         [1, 2],
         [2, 0],
@@ -67,9 +67,9 @@ e2v_list = [
     ]
 
 e2v :: Int -> EdgeIndex -> VertexIndex
-e2v nb (Edge e) = Vertex $ e2v_list!!e!!nb
+e2v nb (Edge e) = Vertex $ e2vList!!e!!nb
 
-v2e_list = [
+v2eList = [
         [0, 15, 2, 9],
         [1, 16, 0, 10],
         [2, 17, 1, 11],
@@ -82,4 +82,4 @@ v2e_list = [
     ]
 
 v2e :: Int -> VertexIndex -> EdgeIndex
-v2e nb (Vertex v) = Edge $ v2e_list!!v!!nb
+v2e nb (Vertex v) = Edge $ v2eList!!v!!nb
