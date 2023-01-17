@@ -1,11 +1,7 @@
-{-# LANGUAGE TypeFamilies #-}
-
 module ToyConnectivity (
     VertexIndex (Vertex),
     EdgeIndex (Edge),
     CellIndex (Cell),
-    localize,
-    index,
     vIdx,
     eIdx,
     cIdx,
@@ -14,8 +10,6 @@ module ToyConnectivity (
     e2v,
     v2e
 ) where
-
-import IteratorIr
 
 data VertexIndex = Vertex { vIdx :: Int }
 data EdgeIndex = Edge { eIdx :: Int }
@@ -33,32 +27,8 @@ c2e_list = [
         [8, 15, 2, 17]
     ]
 
-data UnstructuredConnectivity a b = UC Int [[Int]]
-
-class Location l where
-    localize :: Int -> l
-    index :: l -> Int
-
-instance Location VertexIndex where
-    localize = Vertex
-    index = vIdx
-
-instance Location EdgeIndex where
-    localize = Edge
-    index = eIdx
-
-instance Location CellIndex where
-    localize = Cell
-    index = cIdx
-
-instance (Location a, Location b) => Connectivity (UnstructuredConnectivity a b) where
-    type Source (UnstructuredConnectivity a b) = a
-    type Destination (UnstructuredConnectivity a b) = b
-    neighbor (UC _ nbList) nb i = localize $ nbList!!(index i)!!nb
-    maxNeighbors (UC maxNbs _ ) = maxNbs
-
-c2e :: UnstructuredConnectivity CellIndex EdgeIndex
-c2e = UC 4 c2e_list
+c2e :: Int -> CellIndex -> EdgeIndex
+c2e nb (Cell c) = Edge $ c2e_list!!c!!nb
 
 v2v_list = [
         [1, 3, 2, 6],
@@ -72,8 +42,8 @@ v2v_list = [
         [6, 2, 7, 5]
     ]
 
-v2v :: UnstructuredConnectivity VertexIndex VertexIndex
-v2v = UC 4 v2v_list
+v2v :: Int -> VertexIndex -> VertexIndex
+v2v nb (Vertex v) = Vertex $ v2v_list!!v!!nb
 
 e2v_list = [
         [0, 1],
@@ -96,8 +66,8 @@ e2v_list = [
         [8, 2]
     ]
 
-e2v :: UnstructuredConnectivity EdgeIndex VertexIndex
-e2v = UC 2 e2v_list
+e2v :: Int -> EdgeIndex -> VertexIndex
+e2v nb (Edge e) = Vertex $ e2v_list!!e!!nb
 
 v2e_list = [
         [0, 15, 2, 9],
@@ -111,5 +81,5 @@ v2e_list = [
         [8, 14, 7, 17]
     ]
 
-v2e :: UnstructuredConnectivity VertexIndex EdgeIndex
-v2e = UC 4 v2e_list
+v2e :: Int -> VertexIndex -> EdgeIndex
+v2e nb (Vertex v) = Edge $ v2e_list!!v!!nb
