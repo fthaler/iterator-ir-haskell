@@ -1,11 +1,14 @@
 module IteratorIr (
     Iterator (It),
     deref,
+    itZip2,
     shift,
     lift1,
     lift2,
+    derefedNbShift,
     nbShift,
-    reduce1
+    reduce1,
+    reduce2
 ) where
 
 import Control.Lens.Internal.Context
@@ -46,5 +49,8 @@ lift2 g (It f a) (It f' a') = It (\x -> g (It f x) (It f' x)) a  -- TODO: a and 
 derefedNbShift n c it = [deref (shift (c i) it) | i <- [0..n-1]]
 nbShift n c = lift1 $ derefedNbShift n c
 
+itZip2 = lift2 $ \x y -> (deref x, deref y)
 
 reduce1 f i = foldl f i . deref
+reduce2 f i a b = foldl (\x (y, z) -> f x y z) i $ zip (deref a) (deref b)
+

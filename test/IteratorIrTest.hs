@@ -11,6 +11,8 @@ import ToyConnectivity as TC
 
 stencil2 x y = (deref x) + (deref y)
 
+scalarProd = (sum .) . zipWith (*)
+
 
 edgesToVertices inp = [
         deref $ shift (TC.v2e 0) inp,
@@ -38,7 +40,11 @@ tests = [
             testCase "basic" $ edgesToVertices eItOnV @?= [0, 15, 2, 9],
             testCase "nbShift" $ deref (nbShift 4 TC.v2e eItOnV) @?= [0, 15, 2, 9],
             testCase "neighbor sum" $ reduce1 (+) 0 (nbShift 4 TC.v2e eItOnV) @?= 26,
-            testCase "lifted neighbor sum" $ deref (lift1 (reduce1 (+) 0) (nbShift 4 TC.v2e eItOnV)) @?= 26
+            testCase "lifted + shifted neighbor sum" $ deref (shift (TC.v2v 0) (lift1 (reduce1 (+) 0) (nbShift 4 TC.v2e eItOnV))) @?= 27
+        ],
+        testGroup "complex" [
+            testCase "multi-sum" $ reduce2 (\a x y -> a + x * y) 0 (nbShift 4 TC.v2v vItOnV) (nbShift 4 TC.v2e eItOnV) @?= 103,
+            testCase "multi-sum without reduce" $ (scalarProd (derefedNbShift 4 TC.v2v vItOnV) (derefedNbShift 4 TC.v2e eItOnV)) @?= 103
         ]
     ]
 
