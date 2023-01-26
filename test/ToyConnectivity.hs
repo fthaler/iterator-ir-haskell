@@ -27,8 +27,8 @@ c2eList = [
         [8, 15, 2, 17]
     ]
 
-c2e :: Int -> CellIndex -> EdgeIndex
-c2e nb (Cell c) = Edge $ c2eList!!c!!nb
+c2e :: CellIndex -> [EdgeIndex]
+c2e (Cell c) = map Edge $ c2eList!!c
 
 v2vList = [
         [1, 3, 2, 6],
@@ -42,8 +42,8 @@ v2vList = [
         [6, 2, 7, 5]
     ]
 
-v2v :: Int -> VertexIndex -> VertexIndex
-v2v nb (Vertex v) = Vertex $ v2vList!!v!!nb
+v2v :: VertexIndex -> [VertexIndex]
+v2v (Vertex v) = map Vertex $ v2vList!!v
 
 e2vList = [
         [0, 1],
@@ -66,8 +66,8 @@ e2vList = [
         [8, 2]
     ]
 
-e2v :: Int -> EdgeIndex -> VertexIndex
-e2v nb (Edge e) = Vertex $ e2vList!!e!!nb
+e2v :: EdgeIndex -> [VertexIndex]
+e2v (Edge e) = map Vertex $ e2vList!!e
 
 v2eList = [
         [0, 15, 2, 9],
@@ -81,5 +81,5 @@ v2eList = [
         [8, 14, 7, 17]
     ]
 
-v2e :: Int -> VertexIndex -> EdgeIndex
-v2e nb (Vertex v) = Edge $ v2eList!!v!!nb
+v2e :: VertexIndex -> [EdgeIndex]
+v2e (Vertex v) = map Edge $ v2eList!!v

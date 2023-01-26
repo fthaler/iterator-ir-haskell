@@ -1,5 +1,6 @@
 module IteratorIr (
     Iterator (It),
+    nb,
     deref,
     itZip2,
     shift,
@@ -33,6 +34,9 @@ instance IndexedComonadStore Iterator where
     iexperiment f (It g a) = g <$> f a
 
 
+nb :: (a -> [b]) -> Int -> a -> b
+nb c i = (!! i) . c
+
 deref :: Iterator a a t -> t
 deref = iextract  -- from IndexedComonad
 
@@ -46,8 +50,9 @@ lift2 :: (Iterator b c t -> Iterator b c' t' -> r) -> Iterator a c t -> Iterator
 lift2 g (It f a) (It f' a') = It (\x -> g (It f x) (It f' x)) a  -- TODO: a and a' must be identical!
 
 
-derefedNbShift n c = iexperiment $ \x -> [c i x | i <- [0..n-1]]
-nbShift n c = lift1 $ derefedNbShift n c
+derefedNbShift :: (b -> [c]) -> Iterator b c t -> [t]
+derefedNbShift = iexperiment
+nbShift = lift1 . derefedNbShift
 
 itZip2 = lift2 $ \x y -> (deref x, deref y)
 
