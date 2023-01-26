@@ -46,7 +46,7 @@ lift2 :: (Iterator b c t -> Iterator b c' t' -> r) -> Iterator a c t -> Iterator
 lift2 g (It f a) (It f' a') = It (\x -> g (It f x) (It f' x)) a  -- TODO: a and a' must be identical!
 
 
-derefedNbShift n c it = [deref (shift (c i) it) | i <- [0..n-1]]
+derefedNbShift n c = iexperiment $ \x -> [c i x | i <- [0..n-1]]
 nbShift n c = lift1 $ derefedNbShift n c
 
 itZip2 = lift2 $ \x y -> (deref x, deref y)
