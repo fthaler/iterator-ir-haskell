@@ -31,7 +31,7 @@ instance IndexedComonadStore Iterator where
     ipeeks f (It g a) = g (f a)
     iseek a (It g _) = It g a
     iseeks f (It g a) = It g (f a)
-    iexperiment f (It g a) = g <$> f a
+    iexperiment f (It g a) = fmap g (f a)
 
 
 nb :: (a -> [b]) -> Int -> a -> b
