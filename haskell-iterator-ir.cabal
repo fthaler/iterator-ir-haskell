@@ -36,4 +36,5 @@ test-suite haskell-iterator-ir-test
                        HUnit,
                        lens ^>=5.2
   other-modules:       IteratorIr,
-                       ToyConnectivity
+                       ToyConnectivity,
+                       ToyConnectivityTests
