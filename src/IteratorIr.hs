@@ -56,6 +56,7 @@ derefedNbShift = iexperiment
 nbShift = lift1 . derefedNbShift
 
 itZip2 = lift2 $ \x y -> (deref x, deref y)
+itUnzip2 i = (ifmap fst i, ifmap snd i)
 
 reduce1 f i = foldl f i . deref
 reduce2 f i a b = foldl (\x (y, z) -> f x y z) i $ zip (deref a) (deref b)
