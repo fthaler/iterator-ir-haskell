@@ -4,9 +4,10 @@ import Test.Framework
 
 import IteratorIr
 
+import CartesianTests
 import ToyConnectivityTests
 
-tests = toyConnectivityTests
+tests = cartesianTests ++ toyConnectivityTests
 
 main :: IO()
 main = defaultMain tests
