@@ -1,5 +1,5 @@
-module ToyConnectivityTests (
-    toyConnectivityTests
+module ToyConnectivity2DTests (
+    toyConnectivity2DTests
 ) where
 
 import Test.HUnit
@@ -8,7 +8,16 @@ import Test.Framework.Providers.HUnit
 
 import IteratorIr
 
-import ToyConnectivity
+import qualified ToyConnectivity as TC
+
+data Index a = Index { hIndex :: a, vIndex :: Int }
+
+sV o (Index h v) = Index h (v + o)
+
+c2e (Index h v) = [Index hIdx v | hIdx <- (TC.c2e h)]
+v2v (Index h v) = [Index hIdx v | hIdx <- (TC.v2v h)]
+e2v (Index h v) = [Index hIdx v | hIdx <- (TC.e2v h)]
+v2e (Index h v) = [Index hIdx v | hIdx <- (TC.v2e h)]
 
 stencil2 x y = (deref x) + (deref y)
 
@@ -22,11 +31,11 @@ edgesToVertices inp = [
         deref $ shift (nb v2e 3) inp
     ]
 
-vItOnV = It vIdx (Vertex 0)
-eItOnV = It eIdx (Vertex 0)
+vItOnV = It (TC.vIdx . hIndex) (Index (TC.Vertex 0) 0)
+eItOnV = It (TC.eIdx . hIndex) (Index (TC.Vertex 0) 0)
 
-toyConnectivityTests = [
-        testGroup "toyConnectivity" [
+toyConnectivity2DTests = [
+        testGroup "toyConnectivity2D" [
             testCase "deref" $ deref vItOnV @?= 0,
             testCase "shift" $ deref (shift (nb v2v 0) vItOnV) @?= 1,
             testCase "lift1" $ deref (lift1 deref vItOnV) @?= 0,
