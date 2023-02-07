@@ -46,8 +46,9 @@ shift = iseeks  -- from IndexedComonadStore
 lift1 :: (Iterator b c t -> r) -> Iterator a c t -> Iterator a b r
 lift1 = iextend  -- from IndexedComonad
 
-lift2 :: (Iterator b c t -> Iterator b c' t' -> r) -> Iterator a c t -> Iterator a c' t' -> Iterator a b r
-lift2 g (It f a) (It f' a') = It (\x -> g (It f x) (It f' x)) a  -- TODO: a and a' must be identical!
+lift2 :: Eq a => (Iterator b c t -> Iterator b c' t' -> r) -> Iterator a c t -> Iterator a c' t' -> Iterator a b r
+lift2 g (It f a) (It f' a')
+    | a == a' = It (\x -> g (It f x) (It f' x)) a
 
 
 derefedNbShift :: (b -> [c]) -> Iterator b c t -> [t]

@@ -8,7 +8,7 @@ import Test.Framework.Providers.HUnit
 
 import IteratorIr
 
-data CartesianIndex = C { iIndex :: Int, jIndex :: Int }
+data CartesianIndex = C { iIndex :: Int, jIndex :: Int } deriving Eq
 
 sI o (C i j) = C (i + o) j
 sJ o (C i j) = C i (j + o)
