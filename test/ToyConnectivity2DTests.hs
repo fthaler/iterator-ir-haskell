@@ -10,7 +10,7 @@ import IteratorIr
 
 import qualified ToyConnectivity as TC
 
-data Index a = Index { hIndex :: a, vIndex :: Int } deriving Eq
+data Index a = Index { hIndex :: a, vIndex :: Int }
 
 sV o (Index h v) = Index h (v + o)
 
