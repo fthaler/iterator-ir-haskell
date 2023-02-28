@@ -12,5 +12,4 @@ jobs:
           enable-stack: true
       - run: >
           cabal update &&
-          cabal install &&
           cabal test
