@@ -13,7 +13,7 @@ data CartesianIndex = C { iIndex :: Int, jIndex :: Int }
 sI o (C i j) = C (i + o) j
 sJ o (C i j) = C i (j + o)
 
-inputData idx = (iIndex idx)^3 + 7 * (jIndex idx)^4
+inputData idx = iIndex idx ^ 3 + 7 * jIndex idx ^ 4
 
 initialIterators = [It inputData (C i j) | i <- [0..6], j <- [0..4]]
 

@@ -14,12 +14,12 @@ data Index a = Index { hIndex :: a, vIndex :: Int }
 
 sV o (Index h v) = Index h (v + o)
 
-c2e (Index h v) = [Index hIdx v | hIdx <- (TC.c2e h)]
-v2v (Index h v) = [Index hIdx v | hIdx <- (TC.v2v h)]
-e2v (Index h v) = [Index hIdx v | hIdx <- (TC.e2v h)]
-v2e (Index h v) = [Index hIdx v | hIdx <- (TC.v2e h)]
+c2e (Index h v) = [Index hIdx v | hIdx <- TC.c2e h]
+v2v (Index h v) = [Index hIdx v | hIdx <- TC.v2v h]
+e2v (Index h v) = [Index hIdx v | hIdx <- TC.e2v h]
+v2e (Index h v) = [Index hIdx v | hIdx <- TC.v2e h]
 
-stencil2 x y = (deref x) + (deref y)
+stencil2 x y = deref x + deref y
 
 scalarProd = (sum .) . zipWith (*)
 
@@ -49,6 +49,6 @@ toyConnectivity2DTests = [
             testCase "neighbor sum" $ reduce1 (+) 0 (nbShift v2e eItOnV) @?= 26,
             testCase "lifted + shifted neighbor sum" $ deref (shift (nb v2v 0) (lift1 (reduce1 (+) 0) (nbShift v2e eItOnV))) @?= 27,
             testCase "multi-sum" $ reduce2 (\a x y -> a + x * y) 0 (nbShift v2v vItOnV) (nbShift v2e eItOnV) @?= 103,
-            testCase "multi-sum without reduce" $ (scalarProd (derefedNbShift v2v vItOnV) (derefedNbShift v2e eItOnV)) @?= 103
+            testCase "multi-sum without reduce" $ scalarProd (derefedNbShift v2v vItOnV) (derefedNbShift v2e eItOnV) @?= 103
         ]
     ]

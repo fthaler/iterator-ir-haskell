@@ -10,7 +10,7 @@ import IteratorIr
 
 import ToyConnectivity
 
-stencil2 x y = (deref x) + (deref y)
+stencil2 x y = deref x + deref y
 
 scalarProd = (sum .) . zipWith (*)
 
@@ -40,6 +40,6 @@ toyConnectivityTests = [
             testCase "neighbor sum" $ reduce1 (+) 0 (nbShift v2e eItOnV) @?= 26,
             testCase "lifted + shifted neighbor sum" $ deref (shift (nb v2v 0) (lift1 (reduce1 (+) 0) (nbShift v2e eItOnV))) @?= 27,
             testCase "multi-sum" $ reduce2 (\a x y -> a + x * y) 0 (nbShift v2v vItOnV) (nbShift v2e eItOnV) @?= 103,
-            testCase "multi-sum without reduce" $ (scalarProd (derefedNbShift v2v vItOnV) (derefedNbShift v2e eItOnV)) @?= 103
+            testCase "multi-sum without reduce" $ scalarProd (derefedNbShift v2v vItOnV) (derefedNbShift v2e eItOnV) @?= 103
         ]
     ]
