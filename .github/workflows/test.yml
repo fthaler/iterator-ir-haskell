@@ -10,4 +10,6 @@ jobs:
       - uses: haskell/actions/setup@v2
         with:
           enable-stack: true
-      - run: cabal test
+      - run: >
+          cabal install
+          cabal test
