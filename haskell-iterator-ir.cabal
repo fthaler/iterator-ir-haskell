@@ -14,7 +14,6 @@ author:              Felix Thaler
 maintainer:          thaler@cscs.ch
 -- copyright:
 -- category:
-extra-source-files:  CHANGELOG.md
 
 library
   exposed-modules:     IteratorIr
