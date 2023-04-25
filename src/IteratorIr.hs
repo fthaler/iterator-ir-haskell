@@ -3,8 +3,9 @@ module IteratorIr (
     nb,
     deref,
     itZip2,
+    itUnzip2,
     shift,
-    lift1,
+    lift,
     lift2,
     derefedNbShift,
     nbShift,
@@ -43,8 +44,8 @@ deref = iextract  -- from IndexedComonad
 shift :: (a -> b) -> Iterator a c t -> Iterator b c t
 shift = iseeks  -- from IndexedComonadStore
 
-lift1 :: (Iterator b c t -> r) -> Iterator a c t -> Iterator a b r
-lift1 = iextend  -- from IndexedComonad
+lift :: (Iterator b c t -> r) -> Iterator a c t -> Iterator a b r
+lift = iextend  -- from IndexedComonad
 
 lift2 :: (Iterator b c t -> Iterator b c' t' -> r) -> Iterator a c t -> Iterator a c' t' -> Iterator a b r
 lift2 g (It f a) (It f' a') = It (\x -> g (It f x) (It f' x)) a  -- TODO: a and a' must be identical!
@@ -52,9 +53,10 @@ lift2 g (It f a) (It f' a') = It (\x -> g (It f x) (It f' x)) a  -- TODO: a and 
 
 derefedNbShift :: (b -> [c]) -> Iterator b c t -> [t]
 derefedNbShift = iexperiment
-nbShift = lift1 . derefedNbShift
+nbShift = lift . derefedNbShift
 
-itZip2 = lift2 $ \x y -> (deref x, deref y)
+itZip2 (It f a) (It f' a') = It (\x -> (f x, f' x)) a
+-- or equivalently: itZip2 = lift2 $ \x y -> (deref x, deref y)
 itUnzip2 i = (ifmap fst i, ifmap snd i)
 
 reduce1 f i = foldl f i . deref

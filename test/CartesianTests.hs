@@ -21,7 +21,7 @@ apply f = map f initialIterators
 
 backwardDiff d x = deref x - deref (shift (d (-1)) x)
 forwardDiff d x = backwardDiff d (shift (d 1) x)
-centralDiff2 d x = backwardDiff d (lift1 (forwardDiff d) x)
+centralDiff2 d x = backwardDiff d (lift (forwardDiff d) x)
 laplacian5Point x = centralDiff2 sI x + centralDiff2 sJ x
 
 cartesianTests = [
@@ -32,7 +32,7 @@ cartesianTests = [
             testCase "shift" $ apply (deref . shift (sI 1)) @?= 
                 [inputData (C i j) | i <- [1..7], j <- [0..4]],
 
-            testCase "lift1" $ apply (deref . lift1 deref) @?=
+            testCase "lift" $ apply (deref . lift deref) @?=
                 [inputData (C i j) | i <- [0..6], j <- [0..4]],
 
             testCase "laplacian5Point" $ apply laplacian5Point @?=
