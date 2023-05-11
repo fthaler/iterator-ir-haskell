@@ -58,7 +58,15 @@ lift2 g (It f a) (It f' a') = It (\x -> g (It f x) (It f' x)) a  -- TODO: a and 
 
 derefedNbShift :: (a -> [b]) -> Iterator a b t -> [t]
 derefedNbShift = iexperiment
+nbShift :: (b -> [c]) -> Iterator a c t -> Iterator a b [t]
 nbShift = lift . derefedNbShift
+
+-- This looks like a Traversal optic (see: Control.Lens.Traversal)
+-- neighborhood :: Traversal i j (Iterator i p t) (Iterator j p t)
+-- neighborhood :: Applicative f => (a -> f b) -> Iterator a c t -> f (Iterator b c t)
+neighborhood :: (a -> [b]) -> Iterator a c t -> [Iterator b c t]
+neighborhood a2b (It acc a) = fmap (It acc) (a2b a)
+
 
 itZip2 (It f a) (It f' a') = It (\x -> (f x, f' x)) a
 -- or equivalently: itZip2 = lift2 $ \x y -> (deref x, deref y)
@@ -66,4 +74,3 @@ itUnzip2 i = (ifmap fst i, ifmap snd i)
 
 reduce1 f i = foldl f i . deref
 reduce2 f i a b = foldl (\x (y, z) -> f x y z) i $ zip (deref a) (deref b)
-
