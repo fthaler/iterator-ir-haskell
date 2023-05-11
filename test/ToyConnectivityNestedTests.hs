@@ -31,8 +31,8 @@ eItOnE = It eIdx (Edge 0)
 toyConnectivityNestedTests = [
         testGroup "toyConnectivityNestedTests" [
             testCase "neighborhood" $ fmap deref (neighborhood e2v vItOnE) @?= [1, 2],
-            testCase "lifted neighborhood" $ let lifted_n = lift1 (neighborhood e2v) vItOnE
-                                             in (ipos lifted_n, fmap deref (deref lifted_n)) @?= (Edge 1, [1, 2]),
+            testCase "lifted neighborhood" $ let liftedN = lift1 (neighborhood e2v) vItOnE
+                                             in (ipos liftedN, fmap deref (deref liftedN)) @?= (Edge 1, [1, 2]),
             testCase "reduce lifted neighborhood" $ reduce1 (\accum it -> accum + deref it) 0 (lift1 (neighborhood e2v) vItOnE) @?= 3
         ]
     ]

@@ -62,7 +62,7 @@ nbShift :: (b -> [c]) -> Iterator a c t -> Iterator a b [t]
 nbShift = lift . derefedNbShift
 
 -- This looks like a Traversal optic (see: Control.Lens.Traversal)
--- neighborhood :: Traversal i j (Iterator i p t) (Iterator j p t)
+-- neighborhood :: Traversal a b (Iterator a p t) (Iterator b p t)
 -- neighborhood :: Applicative f => (a -> f b) -> Iterator a c t -> f (Iterator b c t)
 neighborhood :: (a -> [b]) -> Iterator a c t -> [Iterator b c t]
 neighborhood a2b (It acc a) = fmap (It acc) (a2b a)
