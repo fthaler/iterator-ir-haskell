@@ -8,6 +8,7 @@ module IteratorIr (
     lift,
     lift2,
     derefedNbShift,
+    neighborhood,
     nbShift,
     reduce1,
     reduce2
