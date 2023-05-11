@@ -56,7 +56,7 @@ lift2 :: (Iterator b c t -> Iterator b c' t' -> r) -> Iterator a c t -> Iterator
 lift2 g (It f a) (It f' a') = It (\x -> g (It f x) (It f' x)) a  -- TODO: a and a' must be identical!
 
 
-derefedNbShift :: (b -> [c]) -> Iterator b c t -> [t]
+derefedNbShift :: (a -> [b]) -> Iterator a b t -> [t]
 derefedNbShift = iexperiment
 nbShift = lift . derefedNbShift
 
