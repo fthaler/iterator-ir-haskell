@@ -11,9 +11,9 @@ module ToyConnectivity (
     v2e
 ) where
 
-newtype VertexIndex = Vertex { vIdx :: Int }
-newtype EdgeIndex = Edge { eIdx :: Int }
-newtype CellIndex = Cell { cIdx :: Int }
+newtype VertexIndex = Vertex { vIdx :: Int } deriving Show
+newtype EdgeIndex = Edge { eIdx :: Int } deriving Show
+newtype CellIndex = Cell { cIdx :: Int } deriving Show
 
 c2eList = [
         [0, 10, 3, 9],

@@ -14,9 +14,14 @@ module IteratorIr (
 ) where
 
 import Control.Lens.Internal.Context
+import Data.Typeable (Typeable, typeOf)
 
 
 data Iterator a b t = It (b -> t) a
+
+instance (Show a, Typeable a, Typeable b, Typeable t) => Show (Iterator a b t) where
+    showsPrec p (It f a) = showParen (p > 10) $
+        showString (show (typeOf (It f a))) . showString " @ " . shows a
 
 instance IndexedFunctor Iterator where
     ifmap f (It g t) = It (f . g) t
