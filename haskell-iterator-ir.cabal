@@ -16,7 +16,8 @@ maintainer:          thaler@cscs.ch
 -- category:
 
 library
-  exposed-modules:     IteratorIr
+  exposed-modules:     IteratorIr,
+                       IteratorIr.DimensionSet
   -- other-modules:
   -- other-extensions:
   build-depends:       base >=4.13 && <5,
@@ -35,7 +36,9 @@ test-suite haskell-iterator-ir-test
                        HUnit,
                        lens ^>=5.2
   other-modules:       IteratorIr,
+                       IteratorIr.DimensionSet,
                        CartesianTests,
+                       DimensionSetTests,
                        ToyConnectivity,
                        ToyConnectivityTests,
                        ToyConnectivity2DTests,
